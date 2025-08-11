@@ -48,9 +48,10 @@ const handleSubmit = async (e) => {
     toast.success(data.message || "Login Successfully! ✅");
 
 
-    localStorage.setItem("accessToken", data.tokens.access.AccessToken);
-    localStorage.setItem("refreshToken", data.tokens.refresh.RefreshToken);
-    
+   localStorage.setItem("accessToken", data.tokens.access.AccessToken);
+localStorage.setItem("refreshToken", data.tokens.refresh.RefreshToken);
+localStorage.setItem("user", JSON.stringify(data.payload)); // store payload
+
     setTimeout(() => {
       navigate('/');
     }, 2000);

@@ -23,7 +23,7 @@ const Navbar = () => {
             onClick={() => navigate("/")}
           >
             <span className="text-2xl font-bold text-blue-500">
-              Task <span className="text-red-600">Manager</span>
+              Task <span className="text-red-600">Dashboard</span>
             </span>
           </div>
 
