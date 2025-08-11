@@ -33,7 +33,7 @@ const Navbar = () => {
               {/* Profile Button */}
               <button
                 onClick={() => navigate("/profile")}
-                className="px-4 py-2 text-blue-500 rounded-lg hover:bg-blue-500 hover:text-white transition"
+                className="px-4 py-2 text-blue-500 cursor-pointer rounded-lg hover:bg-blue-500 hover:text-white transition"
               >
                 <FaUser size={18} />
               </button>
