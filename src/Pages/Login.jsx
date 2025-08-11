@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Loader from '../Components/Loader';
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate()
@@ -38,20 +39,20 @@ const Login = () => {
         setLoading(true)
 
         try {
-            const response = await axios.post("YOUR_API_ENDPOINT_HERE", formData, {
+            const response = await axios.post("API", formData, {
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
             console.log(response.data)
-            toast.success("Congratulations, You are Registered!")
+            toast.success("Login Successfully!✅")
             localStorage.setItem("token",response.token)
             setTimeout(() => {
                 navigate('/')
             }, 3000)
         } catch (error) {
             console.log(error)
-            toast.error("Something went wrong")
+            toast.error("Something went wrong!🚨")
             setError(true)
         } finally {
             setLoading(false)
@@ -60,6 +61,12 @@ const Login = () => {
 
     return (
         <>
+            {loading && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                    <Loader />
+                </div>
+            )}
+
             <section className='min-h-screen w-full px-4 py-20 bg-gray-900'>
                 <div className='max-w-md mx-auto bg-gray-800 border-2 border-gray-600 rounded-3xl p-8'>
                     <h2 className='text-4xl font-bold text-white text-center mb-8 cursor-pointer hover:text-purple-600 transition'>
@@ -106,8 +113,9 @@ const Login = () => {
                             >
                                 {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
                             </button>
+                        <a href="/forgot-password" className='text-blue-500 text-xs mb-4'>Forgot Password</a>
                         </div>
-                        <p className='text-white'>Don't have an Account ? <a href="/signup" className='text-blue-500'>Signup Here</a></p>
+                        <p className='text-white'>Already have an Account ? <a href="/signup" className='text-blue-600'>Signup</a></p>
                         <button
                             onClick={handleSubmit}
                             disabled={loading}
