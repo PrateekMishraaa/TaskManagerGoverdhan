@@ -44,7 +44,7 @@ const SignUp = () => {
 
   try {
     const response = await axios.post(
-      "http://localhost:3000/api/v1/user/create",
+      "http://localhost:3000/api/route/user/create",
       formData,
       // { withCredentials: true } // include if your backend needs cookies/sessions
     );
