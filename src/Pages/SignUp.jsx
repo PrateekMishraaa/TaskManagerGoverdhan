@@ -10,69 +10,62 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    FullName: '',
-    Email: '',
-    Mobile: '',
-    Password: '',
-    // Role: '',
+    name: '',
+    email: '',
+    password: '',
+    phone: '',
+    role: '',
   });
   const [loading, setLoading] = useState(false);
 
   const handleShowPassword = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((prev) => !prev);
   };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if(formData.Password.length < 3){
-        toast.error("Password length between 3 to 10 characters")
-    }
-    if(formData.Mobile.length < 10){
-            toast.error("Phone number should be in 10 digits")
-    }
+  if (
+    !formData.name.trim() ||
+    !formData.email.trim() ||
+    !formData.phone.trim() ||
+    !formData.password.trim() ||
+    !formData.role.trim()
+  ) {
+    toast.error("All fields are required");
+    return;
+  }
 
-    if (
-      !formData.FullName.trim() ||
-      !formData.Email.trim() ||
-      !formData.Mobile.trim() ||
-      !formData.Password.trim() 
-    
-    ) {
-      toast.error('All fields are required');
-      return;
-    }
+  setLoading(true);
 
-    setLoading(true);
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/api/v1/user/create",
+      formData,
+      { withCredentials: true } // include if your backend needs cookies/sessions
+    );
 
-    try {
-      const response = await axios.post(
-        'YOUR_API_ENDPOINT_HERE',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      console.log(response.data);
-      toast.success('Congratulations, You are Registered! ✅');
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000);
-    } catch (error) {
-      console.error(error);
-      toast.error(
-        error.response?.data?.message || 'Something went wrong 🚨'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    toast.success(response.data.message || "🎉 Registration successful!");
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      role: "",
+    });
+
+    setTimeout(() => navigate("/login"), 2500);
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Something went wrong 🚨");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <>
@@ -84,98 +77,84 @@ const SignUp = () => {
 
       <section className="min-h-screen w-full px-4 py-20 bg-gray-900">
         <div className="max-w-md mx-auto bg-gray-800 border-2 border-gray-600 rounded-3xl p-8">
-          <h2 className="text-4xl font-bold text-white text-center mb-8 cursor-pointer hover:text-purple-600 transition">
+          <h2 className="text-4xl font-bold text-white text-center mb-8 hover:text-purple-600 transition">
             Sign Up Here
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Name */}
             <div>
-              <label
-                htmlFor="FullName"
-                className="block font-semibold text-xl text-white mb-2"
-              >
+              <label className="block font-semibold text-xl text-white mb-2">
                 Full Name
               </label>
               <input
                 type="text"
-                id="FullName"
-                name="FullName"
-                value={formData.FullName}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 className="w-full h-12 px-4 border-2 border-gray-500 rounded-2xl bg-gray-700 text-white placeholder-gray-400 focus:border-purple-600 focus:outline-none"
                 placeholder="Enter Your Full Name"
               />
             </div>
 
+            {/* Email */}
             <div>
-              <label
-                htmlFor="Email"
-                className="block font-semibold text-xl text-white mb-2"
-              >
+              <label className="block font-semibold text-xl text-white mb-2">
                 Email
               </label>
               <input
                 type="email"
-                id="Email"
-                name="Email"
-                value={formData.Email}
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
                 className="w-full h-12 px-4 border-2 border-gray-500 rounded-2xl bg-gray-700 text-white placeholder-gray-400 focus:border-purple-600 focus:outline-none"
                 placeholder="Enter Your Email"
               />
             </div>
 
+            {/* Phone */}
             <div>
-              <label
-                htmlFor="Mobile"
-                className="block font-semibold text-xl text-white mb-2"
-              >
+              <label className="block font-semibold text-xl text-white mb-2">
                 Mobile
               </label>
               <input
                 type="tel"
-                id="Mobile"
-                name="Mobile"
-                value={formData.Mobile}
+                name="phone"
+                value={formData.phone}
                 onChange={handleChange}
                 className="w-full h-12 px-4 border-2 border-gray-500 rounded-2xl bg-gray-700 text-white placeholder-gray-400 focus:border-purple-600 focus:outline-none"
                 placeholder="Enter Your Mobile Number"
               />
             </div>
 
-      
-            {/* <div>
-              <label
-                htmlFor="Role"
-                className="block font-semibold text-xl text-white mb-2"
-              >
+            {/* Role */}
+            <div>
+              <label className="block font-semibold text-xl text-white mb-2">
                 Role
               </label>
-              <select
-                id="Role"
-                name="Role"
-                value={formData.Role}
-                onChange={handleChange}
-                className="w-full h-12 px-4 cursor-pointer border-2 border-gray-500 rounded-2xl bg-gray-700 text-white focus:border-purple-600 focus:outline-none"
-              >
+            <select
+  name="role"
+  value={formData.role}
+  onChange={handleChange}
+  className="w-full h-12 cursor-pointer border-2 border-gray-500 rounded-2xl bg-gray-700 text-white focus:border-purple-600 focus:outline-none"
+>
+  <option value="">-- Select Role --</option>
+  <option value="Developer">Developer</option>
+  <option value="Projectmanager">Project Manager</option>
+  <option value="admin">Admin</option>
+</select>
 
-                <option value="developer" >Developer</option>
-                <option value="projectmanager" >Project Manager</option>
-              </select>
-            </div> */}
+            </div>
 
+            {/* Password */}
             <div className="relative">
-              <label
-                htmlFor="Password"
-                className="block font-semibold text-xl text-white mb-2"
-              >
+              <label className="block font-semibold text-xl text-white mb-2">
                 Password
               </label>
               <input
                 type={showPassword ? 'text' : 'password'}
-                id="Password"
-                name="Password"
-                value={formData.Password}
+                name="password"
+                value={formData.password}
                 onChange={handleChange}
                 className="w-full h-12 px-4 pr-12 border-2 border-gray-500 rounded-2xl bg-gray-700 text-white placeholder-gray-400 focus:border-purple-600 focus:outline-none"
                 placeholder="Enter Your Password"
@@ -199,7 +178,7 @@ const SignUp = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-6 h-12 cursor-pointer bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white font-semibold rounded-2xl transition duration-300 ease-in-out transform hover:scale-105 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full mt-6 h-12 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white font-semibold rounded-2xl transition duration-300 ease-in-out transform hover:scale-105 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
@@ -207,17 +186,7 @@ const SignUp = () => {
         </div>
       </section>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
 };
