@@ -46,7 +46,7 @@ const SignUp = () => {
     const response = await axios.post(
       "http://localhost:3000/api/v1/user/create",
       formData,
-      { withCredentials: true } // include if your backend needs cookies/sessions
+      // { withCredentials: true } // include if your backend needs cookies/sessions
     );
 
     toast.success(response.data.message || "🎉 Registration successful!");
