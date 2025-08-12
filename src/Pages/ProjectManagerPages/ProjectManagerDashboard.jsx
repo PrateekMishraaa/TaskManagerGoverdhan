@@ -1,8 +1,8 @@
 import React from 'react';
-import Navbar from '../Components/Navbar';
+import Navbar from '../../Components/Navbar.jsx';
 import { FaEnvelope, FaPhoneAlt, FaUserAlt,FaCriticalRole } from 'react-icons/fa';
 
-const Home = () => {
+const  ProjectManagerDashboard= () => {
   const userData = JSON.parse(localStorage.getItem("user"));
   // console.log(userData);
 
@@ -18,8 +18,8 @@ const Home = () => {
     <>
       <section className="min-h-screen w-full bg-gray-900">
         <Navbar />
-        <div className="flex  justify-center items-center px-4 py-20 relative right-[35%] ">
-          <div className="w-full h-[80vh] max-w-md bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl p-8 text-white relative overflow-hidden border border-gray-700">
+        <div className="flex justify-center items-center px-4 py-20 relative right-[34%]">
+          <div className="w-full max-w-md bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl shadow-xl p-8 text-white relative overflow-hidden border border-gray-700">
             
             {/* Profile Avatar */}
             <div className="flex justify-center">
@@ -67,4 +67,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ProjectManagerDashboard;

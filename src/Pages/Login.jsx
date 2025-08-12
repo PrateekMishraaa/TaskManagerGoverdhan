@@ -37,7 +37,7 @@ const handleSubmit = async (e) => {
 
   try {
     const { data } = await axios.post(
-      "http://localhost:3000/api/route/user/login",
+      "http://localhost:3000/api/route/auth/login",
       formData,
       {
         headers: { "Content-Type": "application/json" },
@@ -46,7 +46,7 @@ const handleSubmit = async (e) => {
     );
 
     toast.success(data.message || "Login Successfully! ✅");
-
+    console.log(data)
 
    localStorage.setItem("accessToken", data.tokens.access.AccessToken);
 localStorage.setItem("refreshToken", data.tokens.refresh.RefreshToken);
