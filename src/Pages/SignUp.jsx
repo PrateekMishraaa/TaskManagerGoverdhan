@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import Logo from "../assets/logo.svg"
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Loader from '../Components/Loader';
@@ -77,6 +78,9 @@ const SignUp = () => {
 
       <section className="min-h-screen w-full px-4 py-20 bg-gray-900">
         <div className="max-w-md mx-auto bg-gray-800 border-2 border-gray-600 rounded-3xl p-8">
+          {/* <div className='h-10 w-10 '>
+            <img src={Logo} alt="logo" className='h-full w-full p-1' />
+          </div> */}
           <h2 className="text-4xl font-bold text-white text-center mb-8 hover:text-purple-600 transition">
             Sign Up Here
           </h2>
