@@ -13,7 +13,7 @@ import AdminDashboard from './Pages/AminPages/AdminDashboard.jsx';
 const App = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const isAuthenticated = !!user;
-console.log(user)
+console.log(user);
   
   const userRole = user?.role?.replace(/\s+/g, '').toLowerCase();
 

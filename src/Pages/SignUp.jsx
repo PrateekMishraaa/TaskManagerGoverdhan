@@ -144,7 +144,7 @@ const SignUp = () => {
 >
   <option value="">-- Select Role --</option>
   <option value="Developer">Developer</option>
-  <option value="Projectmanager">Project Manager</option>
+  <option value="ProjectManager">Project Manager</option>
   <option value="admin">Admin</option>
 </select>
 

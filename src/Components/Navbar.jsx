@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
+
+import { gsap } from "gsap";
 import Loader from "./Loader";
 import Logo from "../assets/time-management.png"
 const Navbar = () => {
+  
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);

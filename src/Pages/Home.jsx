@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../Components/Navbar';
 import axios from "axios";
-import { FaCriticalRole, FaEnvelope, FaPhoneAlt,FaPencilAlt } from 'react-icons/fa';
-import Loader from '../Components/Loader';
+import { FaCriticalRole, FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
 
 const Home = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -52,7 +51,7 @@ const Home = () => {
 
         if (userData.role.toLowerCase() === "admin") {
           filtered = response.data.data.users.filter(user =>
-            ["developer", "projectmanager"].includes(user.role.toLowerCase())
+            ["Developer", "ProjectManager"].includes(user.role.toLowerCase())
           );
         }
 
@@ -77,72 +76,25 @@ const Home = () => {
 
   const handleSave = async () => {
     try {
-      // Validate required fields
-      if (!formData.name || !formData.email) {
-        alert("Name and email are required fields");
-        return;
-      }
-
       // Only send allowed fields
       const { name, email, phone } = formData;
 
-      // Show loading state
-      const originalButtonText = document.querySelector('.bg-green-500').textContent;
-      document.querySelector('.bg-green-500').textContent = 'Saving...';
-      document.querySelector('.bg-green-500').disabled = true;
-
       const res = await axios.put(
         `http://localhost:3000/api/route/auth/update-user/${userData._id}`,
-        { name, email, phone },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            // Add authorization header if you have tokens
-            // 'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        }
+        { name, email, phone }
       );
+      console.log(res);
       
-      console.log('Update response:', res.data);
-      
-      // Update both userData state and localStorage with the response data
-      const updatedUser = { 
-        ...userData, 
-        name: res.data.user?.name || name,
-        email: res.data.user?.email || email,
-        phone: res.data.user?.phone || phone
-      };
-      
+      // Update both userData state and localStorage
+      const updatedUser = { ...userData, name, email, phone };
       setUserData(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
 
       setIsEditing(false);
       alert("Profile updated successfully!");
-      
     } catch (error) {
-      console.error('Update error:', error);
-      
-      // Handle different error scenarios
-      if (error.response) {
-        // Server responded with error status
-        const errorMessage = error.response.data?.message || 
-                            error.response.data?.error || 
-                            'Failed to update profile';
-        alert(`Error: ${errorMessage}`);
-      } else if (error.request) {
-        // Network error
-        alert("Network error. Please check your connection and try again.");
-      } else {
-        // Other error
-        alert("An unexpected error occurred. Please try again.");
-      }
-    } finally {
-      // Reset button state
-      const saveButton = document.querySelector('.bg-green-500');
-      if (saveButton) {
-        saveButton.textContent = 'Save';
-        saveButton.disabled = false;
-      }
+      console.error(error);
+      alert("Failed to update profile");
     }
   };
 
@@ -297,6 +249,7 @@ const Home = () => {
             </div>
           </div>
 
+          {/* Users Table Section */}
           <div className="flex-1 lg:w-2/3 xl:w-3/4">
             <div className="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden">
               <div className="p-4 sm:p-6 border-b border-gray-700">
@@ -306,17 +259,21 @@ const Home = () => {
 
               <div className="p-4 sm:p-6">
                 {loading ? (
-                  <Loader/>
+                  <div className="flex justify-center items-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                    <p className="ml-3 text-gray-400">Loading...</p>
+                  </div>
                 ) : error ? (
                   <div className="text-center py-12">
                     <p className="text-red-500 text-sm sm:text-base">{error}</p>
                   </div>
                 ) : filteredUsers.length === 0 ? (
                   <div className="text-center py-12">
-                    <p className="text-gray-400 text-sm sm:text-base">No team members found</p>
+                    {/* <p className="text-gray-400 text-sm sm:text-base">No team members found</p> */}
                   </div>
                 ) : (
                   <>
+                    {/* Desktop Table */}
                     <div className="hidden md:block overflow-x-auto">
                       <table className="w-full border border-gray-700 rounded-lg overflow-hidden">
                         <thead className="bg-gray-700">
@@ -344,7 +301,7 @@ const Home = () => {
                       </table>
                     </div>
 
-                    
+                    {/* Mobile Cards */}
                     <div className="md:hidden space-y-4">
                       {filteredUsers.map(user => (
                         <div key={user._id} className="bg-gray-700 rounded-lg p-4 border border-gray-600">

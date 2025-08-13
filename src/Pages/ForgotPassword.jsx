@@ -19,7 +19,7 @@ const ForgotPassword = () => {
         setLoading(true);
         try {
             const response = await axios.post(
-                "API", 
+                "http://localhost:3000/api/route/auth/forgate-password", 
                 { email },
                 { headers: { "Content-Type": "application/json" } }
             );
